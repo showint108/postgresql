@@ -1,5 +1,43 @@
 # postgresql
 
+## Tablespace
+
+In PostgreSQL, a **tablespace** is a location on the storage device where PostgreSQL stores data files. Tablespaces allow database administrators to define locations in the file system where the files representing database objects can be stored. Once created, a tablespace can be referred to by name when creating database objects. By using tablespaces, an administrator can control the disk layout of a PostgreSQL installation. 
+
+To create a tablespace, use the `CREATE TABLESPACE` command followed by the name of the tablespace and the location where the files will be stored. For example, to create a tablespace named `fastspace` at the location `/ssd1/postgresql/data`, you can use the following command:
+
+```
+CREATE TABLESPACE fastspace LOCATION '/ssd1/postgresql/data';
+```
+
+The location must be an existing, empty directory that is owned by the PostgreSQL operating system user. All objects subsequently created within the tablespace will be stored in files underneath this directory.
+
+**EXAMPLE:**
+
+Create a directory on the file system where you want to store the data files
+This directory should be created and have appropriate permissions before using it in PostgreSQL
+For example, let's say you create a directory '/path/to/mytablespace'
+
+Create a tablespace using the specified directory
+
+```
+CREATE TABLESPACE mytablespace LOCATION '/path/to/mytablespace';
+```
+
+Now, any objects created within this tablespace will be stored in files underneath the specified directory.
+
+Example: Create a table within the 'mytablespace' tablespace
+
+```
+CREATE TABLE mytable (
+   id serial PRIMARY KEY,
+   name VARCHAR(100)
+) TABLESPACE mytablespace;
+```
+
+If you don't specify a tablespace when creating a table, PostgreSQL will use the default tablespace for the database. When you create a database, it is associated with a default tablespace, and any objects (like tables) created within that database without explicitly specifying a tablespace will be stored in the default tablespace.
+
+
 ## transaction
 
 A transaction is a sequence of one or more SQL statements executed as a single unit of work.
